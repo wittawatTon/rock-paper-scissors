@@ -28,10 +28,19 @@ def kris2(prev_opponent_play):
     return ideal_response[prev_opponent_play]
 
 
+play_order = [{
+    "RR": 0, "RP": 0, "RS": 0,
+    "PR": 0, "PP": 0, "PS": 0,
+    "SR": 0, "SP": 0, "SS": 0,
+}]
 
 def abbey2(prev_opponent_play,
           opponent_history=[],
-          play_order=[{
+          init=False):
+    
+    if init:
+        print("*********************************************************************")
+        play_order[0]={
               "RR": 0,
               "RP": 0,
               "RS": 0,
@@ -41,8 +50,9 @@ def abbey2(prev_opponent_play,
               "SR": 0,
               "SP": 0,
               "SS": 0,
-          }]):
-    
+          }
+        print(play_order)
+        return
 
     if not prev_opponent_play:
         prev_opponent_play = 'R'
@@ -53,7 +63,8 @@ def abbey2(prev_opponent_play,
 
     last_two = "".join(opponent_history[-2:])
     if len(last_two) == 2:
-        play_order[last_two] += 1
+       play_order[0][last_two] +=  1
+
 
     potential_plays = [
         prev_opponent_play + "R",
@@ -62,16 +73,16 @@ def abbey2(prev_opponent_play,
     ]
 
     sub_order = {
-        k: play_order[k]
-        for k in potential_plays if k in play_order
+        k: play_order[0][k]
+        for k in potential_plays if k in play_order[0]
     }
 
-    print(last_two)
-    print(opponent_history)
-    print(play_order)
+    # print(last_two)
+    # print(opponent_history)
+    # print(play_order)
 
-    if last_two.count < 2:
-        return 'P'
+    # if len(last_two) < 2:
+    #     return 'P'
     
     prediction = max(sub_order, key=sub_order.get)[-1:]
 
@@ -102,6 +113,7 @@ def player(prev_play, player_history=[], opponent_history=[], bot_history={}, bo
         del player_history[:]
         del opponent_history[:]
         bot_history.clear()
+        abbey2("R",opponent_history=player_history,init=True)
         bot_scores={"quincy": 0, "mrugesh": 0, "kris": 0, "abbey": 0}
     
     # Simulate each bot's move based on the last player's move
@@ -146,12 +158,12 @@ def player(prev_play, player_history=[], opponent_history=[], bot_history={}, bo
     best_bot = max(bot_scores, key=bot_scores.get)
 
     
-    print("-----------------------")
-    print(best_bot)
+    # print("-----------------------")
+    # print(best_bot)
     # print("prev_play:" + prev_play)
     # print(bot_history)
-    print(bot_scores)
-    print("last player Move:" + last_player_move) 
+    # print(bot_scores)
+    # print("last player Move:" + last_player_move) 
  
     counter_moves = {"R": "P", "P": "S", "S": "R"}
     player_play = counter_moves[bot_history[best_bot][-1]]
