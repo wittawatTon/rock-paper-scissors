@@ -8,7 +8,7 @@ class UnitTests(unittest.TestCase):
 
     def test_player_vs_quincy(self):
         print("Testing game against quincy...")
-        actual = play(player, quincy, 1000) >= 60
+        actual = play(player, quincy, 1000, verbose=True) >= 60
         self.assertTrue(
             actual,
             'Expected player to defeat quincy at least 60% of the time.')
