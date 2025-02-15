@@ -30,27 +30,26 @@ def kris2(prev_opponent_play):
 
 
 def abbey2(prev_opponent_play,
-          opponent_history=None,
-          play_order=None,
-          clear=False):
+          opponent_history=[],
+          play_order=[{
+              "RR": 0,
+              "RP": 0,
+              "RS": 0,
+              "PR": 0,
+              "PP": 0,
+              "PS": 0,
+              "SR": 0,
+              "SP": 0,
+              "SS": 0,
+          }]):
     
 
-    if opponent_history is None:
-        opponent_history = []
-
-    if play_order is None or clear:
-        play_order = {
-            "RR": 0, "RP": 0, "RS": 0,
-            "PR": 0, "PP": 0, "PS": 0,
-            "SR": 0, "SP": 0, "SS": 0
-        }
     if not prev_opponent_play:
         prev_opponent_play = 'R'
     #opponent_history.append(prev_opponent_play)
 
 
-    print(opponent_history)
-    print(play_order)
+
 
     last_two = "".join(opponent_history[-2:])
     if len(last_two) == 2:
@@ -67,6 +66,13 @@ def abbey2(prev_opponent_play,
         for k in potential_plays if k in play_order
     }
 
+    print(last_two)
+    print(opponent_history)
+    print(play_order)
+
+    if last_two.count < 2:
+        return 'P'
+    
     prediction = max(sub_order, key=sub_order.get)[-1:]
 
     ideal_response = {'P': 'S', 'R': 'P', 'S': 'R'}
